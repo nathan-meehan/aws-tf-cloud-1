@@ -35,24 +35,24 @@ data "aws_ami" "amazon_linux" {
 	}
 }
 
-module "vpc_blue" {
+module "vpc_tfc" {
   source = "./templates/vpc"
   vpc_cidr_block = "100.64.0.0/16"
 }
 
-module "sg_1" {
+module "sg_tfc" {
   source = "./templates/sg"
-  vpc_id = module.vpc_blue.vpc_tf_id
+  vpc_id = module.vpc_tfc.vpc_tf_id
 }
 
-module "high_avail_1" {
+module "high_avail_tfc" {
   source = "./templates/high-avail"
 
-  vpc_id     = module.vpc_blue.vpc_tf_id
+  vpc_id     = module.vpc_tfc.vpc_tf_id
   ssh_key_name = "nathan-m-kp"
   image_id = data.aws_ami.amazon_linux.id
-  subnet_ids = module.vpc_blue.vpc_subnets
-  sg_id = module.sg_1.vpc_tf_sg_id
+  subnet_ids = module.vpc_tfc.vpc_subnets
+  sg_id = module.sg_tfc.vpc_tf_sg_id
 
 }
 
